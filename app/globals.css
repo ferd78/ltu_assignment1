@@ -15,6 +15,7 @@
 @theme inline {
   --color-background: var(--color-background);
   --color-foreground: var(--color-foreground);
+<<<<<<< HEAD
 
   --color-teal: var(--color-teal);
   --color-tealzero: var(--color-tealzero);
@@ -23,3 +24,12 @@
   --color-lighterblue: var(--color-lighterblue);
 }
 
+=======
+
+  --color-teal: var(--color-teal);
+  --color-tealzero: var(--color-tealzero);
+  --color-darkteal: var(--color-darkteal);
+  --color-darkblue: var(--color-darkblue);
+  --color-lighterblue: var(--color-lighterblue);
+}
+>>>>>>> d249589 (add dark mode and footer)
