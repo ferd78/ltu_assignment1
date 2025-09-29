@@ -1,17 +1,19 @@
-'use client';
-import NavBar from "./NavBar"
-import ToggleButton from "./ToggleButton"
-import { useTheme } from "next-themes"
-import Footer from "./Footer";
+"use client";
+import StepButton from "./StepButton";
+
 
 export default function Home() {
-  const { theme } = useTheme();
-
   return (
-    <div className={`h-screen ${theme === "dark" ? "bg-darkblue" : "bg-teal" } transition-all duration-300`}>
-      <NavBar />
-      <ToggleButton />
-      <Footer/>
+    <div className="w-screen flex justify-evenly pt-8 gap-32 font-semibold text-white">
+      <div className="flex flex-col gap-4">
+        <h1> Tabs </h1>
+        <h1> Tabs Headers:[+]</h1>
+        <StepButton number={1}/>
+      </div>
+
+      <h1> Tabs Content</h1>
+
+      <h1> Output</h1>
     </div>
-  )
+  );
 }
