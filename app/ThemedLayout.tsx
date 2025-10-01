@@ -15,8 +15,8 @@ export default function ThemedLayout({ children }: { children: React.ReactNode }
 
   const bgClass = mounted
     ? theme === "dark"
-      ? "bg-darkblue"
-      : "bg-teal"
+    ? "bg-darkblue"
+    : "bg-teal"
     : "bg-teal";
 
   return (

@@ -10,15 +10,13 @@ export default function NavBar() {
   const { theme } = useTheme();
   const [mounted, setMounted] = useState(false);
 
-  // ✅ Ensure this only runs on the client
   useEffect(() => setMounted(true), []);
 
-  // pick bg class safely
   const bgClass = mounted
     ? theme === "dark"
       ? "bg-lighterblue"
       : "bg-tealzero"
-    : "bg-tealzero"; // fallback during SSR
+    : "bg-tealzero"; 
 
   return (
     <div>
