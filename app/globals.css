@@ -1,6 +1,6 @@
 @import "tailwindcss";
 
-/* 🔹 Define raw CSS variables */
+
 :root {
   --color-background: #ffffff;
   --color-foreground: #171717;
@@ -9,7 +9,7 @@
   --color-tealzero: #93B1B5; /* lighter teal */
   --color-darkteal: #0B2E33; /* dark teal */
   --color-darkblue: #000B18; /* dark blue */
-  --color-lighterblue: #00172D;
+  --color-lighterblue: #00172D; /* lighter dark blue*/
 }
 
 @theme inline {

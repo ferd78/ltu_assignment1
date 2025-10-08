@@ -11,7 +11,7 @@ interface Step {
 
 export default function Home() {
   const [steps, setSteps] = useState<Step[]>([
-    { id: 1, title: "Setup", content: "Make sure you have VSCode installed.\nWatch and follow the video." },
+    { id: 1, title: "Setup", content: "Make sure you have VSCode installed." },
   ]);
   const [activeStep, setActiveStep] = useState(1);
   const [copied, setCopied] = useState(false);
@@ -56,6 +56,8 @@ export default function Home() {
     }
   };
 
+
+  // delete steps
   const deleteStep = (stepId: number) => {
     if (steps.length > 1) {
       const filteredSteps = steps.filter(step => step.id !== stepId);
@@ -71,6 +73,8 @@ export default function Home() {
     }
   };
 
+
+  //update title
   const updateStepTitle = (stepId: number, title: string) => {
     const updatedSteps = steps.map(step => 
       step.id === stepId ? { ...step, title } : step
@@ -78,6 +82,8 @@ export default function Home() {
     setSteps(updatedSteps);
   };
 
+
+  //update the content 
   const updateStepContent = (stepId: number, content: string) => {
     const updatedSteps = steps.map(step => 
       step.id === stepId ? { ...step, content } : step
@@ -85,6 +91,8 @@ export default function Home() {
     setSteps(updatedSteps);
   };
 
+
+  //function to be copied to clipboard
   const copyToClipboard = async () => {
     try {
       const htmlCode = generateHTML();
@@ -272,7 +280,7 @@ export default function Home() {
 
   return (
     <div className="w-full flex flex-col lg:flex-row justify-around pt-12 font-semibold text-white pr-0 lg:pr-12 gap-8 lg:gap-0 px-4 lg:px-0 pb-20">
-      {/* Tabs Headers Section */}
+      {/* Header */}
       <div className="flex flex-col order-1 lg:order-1">
         <div className="lg:absolute left-10 top-48">
           <h1>Tabs</h1>
@@ -302,7 +310,7 @@ export default function Home() {
         </div>
       </div>
 
-      {/* Tabs Content Section */}
+      {/* Main content (HTML Generator)*/}
       <div className="flex flex-col items-center gap-4 order-2 lg:order-2">
         <h1>Tabs Content</h1>
         <div className={`h-48 w-3/4 lg:w-96 rounded-xl p-6 ${theme === 'dark' ? 'bg-lighterblue' : 'bg-tealzero'}`}>
@@ -328,7 +336,7 @@ export default function Home() {
         </div>
       </div>
 
-      {/* Output Section */}
+      {/* Output  */}
       <div className="flex flex-col items-center gap-4 order-3 lg:order-3 w-full lg:max-w-2xl">
         <div className="flex items-center gap-4">
           <h1>Output</h1>
