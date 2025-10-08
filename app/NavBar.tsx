@@ -35,7 +35,7 @@ export default function NavBar() {
             </div>
           </h2>
           <h2 className="text-white font-semibold tracking-[1.25] text-md">
-            Student: 22586555
+            Student ID: 22586555
           </h2>
         </div>
 
@@ -80,7 +80,7 @@ export default function NavBar() {
           </div>
         </h2>
         <h2 className="text-white font-semibold tracking-[1.25] text-md">
-          Student: 22586555
+          Student ID: 22586555
         </h2>
       </div>
 
