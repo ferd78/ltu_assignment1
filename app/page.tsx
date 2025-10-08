@@ -20,7 +20,7 @@ export default function Home() {
 
   useEffect(() => setMounted(true), []);
 
-  // Load saved steps and active step from localStorage on component mount
+  // saved cookies for the stepButton component and last saved step
   useEffect(() => {
     const savedSteps = localStorage.getItem('steps');
     const savedActiveStep = localStorage.getItem('activeStep');
@@ -140,7 +140,7 @@ export default function Home() {
 </html>`;
   };
 
-  // Loading state to prevent hydration errors
+  // This is a load state that prevents hydration error
   if (!mounted) {
     return (
       <div className="w-full flex flex-col lg:flex-row justify-around pt-12 font-semibold text-white pr-0 lg:pr-12 gap-8 lg:gap-0 px-4 lg:px-0 pb-20">
