@@ -11,7 +11,7 @@ interface Step {
 
 export default function Home() {
   const [steps, setSteps] = useState<Step[]>([
-    { id: 1, title: "Install VSCode", content: "This is your HTML + JS output." },
+    { id: 1, title: "Setup", content: "Make sure you have VSCode installed.\nWatch and follow the video." },
   ]);
   const [activeStep, setActiveStep] = useState(1);
   const [copied, setCopied] = useState(false);
@@ -86,56 +86,140 @@ export default function Home() {
   };
 
   const copyToClipboard = async () => {
-    if (currentStep) {
-      const htmlCode = generateHTML(currentStep.title, currentStep.content);
-      try {
-        await navigator.clipboard.writeText(htmlCode);
-        setCopied(true);
-        setTimeout(() => setCopied(false), 2000);
-      } catch (err) {
-        console.error('Failed to copy text: ', err);
-      }
+    try {
+      const htmlCode = generateHTML();
+      await navigator.clipboard.writeText(htmlCode);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch (err) {
+      console.error('Failed to copy text: ', err);
     }
   };
 
   const currentStep = steps.find(step => step.id === activeStep);
 
-  const generateHTML = (title: string, content: string) => {
+  const generateHTML = () => {
+    const tabButtons = steps.map((step, index) => 
+      `<button class="tablinks" onclick="openTab(event, 'Step${step.id}')">${index + 1}. ${step.title}</button>`
+    ).join('\n    ');
+
+    const tabContents = steps.map((step, index) => {
+      const isFirst = index === 0;
+      const displayStyle = isFirst ? 'block' : 'none';
+      
+      // Format content with proper HTML line breaks
+      const formattedContent = step.content
+        .split('\n')
+        .map(line => {
+          // Check if line looks like code (starts with special characters or commands)
+          if (line.trim().startsWith('sudo') || 
+              line.trim().startsWith('#') || 
+              line.trim().startsWith('<') ||
+              line.trim().startsWith('!') ||
+              line.includes('dnf') || 
+              line.includes('systemctl')) {
+            return `<pre style="background: #f8f8f8; padding: 10px; border-radius: 5px; overflow-x: auto;">${line}</pre>`;
+          } else if (line.trim() === '') {
+            return '<br>';
+          } else {
+            return `<p>${line}</p>`;
+          }
+        })
+        .join('');
+      
+      return `<div id="Step${step.id}" class="tabcontent" style="display:${displayStyle}; padding: 6px 12px; border: 1px solid #ccc; border-top: none;">
+  <h3>${step.title}</h3>
+  ${formattedContent}
+</div>`;
+    }).join('\n\n');
+
     return `<!DOCTYPE html>
 <html>
 <head>
-  <title>${title}</title>
+  <title>Lab Steps</title>
   <style>
     body {
       font-family: Arial, sans-serif;
-      max-width: 800px;
+      max-width: 1200px;
       margin: 0 auto;
       padding: 20px;
       background-color: #f5f5f5;
     }
-    .container {
-      background: white;
-      padding: 30px;
-      border-radius: 10px;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    .tab {
+      overflow: hidden;
+      border: 1px solid #ccc;
+      background-color: #f1f1f1;
     }
-    h1 {
-      color: #2d3748;
-      border-bottom: 3px solid #38b2ac;
-      padding-bottom: 10px;
+    .tab button {
+      background-color: inherit;
+      float: left;
+      border: none;
+      outline: none;
+      cursor: pointer;
+      padding: 14px 16px;
+      transition: 0.3s;
+      font-size: 17px;
     }
-    p {
-      color: #4a5568;
+    .tab button:hover {
+      background-color: #ddd;
+    }
+    .tab button.active {
+      background-color: #ccc;
+    }
+    .tabcontent {
+      animation: fadeEffect 1s;
+    }
+    @keyframes fadeEffect {
+      from {opacity: 0;}
+      to {opacity: 1;}
+    }
+    pre {
+      background: #f8f8f8;
+      border: 1px solid #ddd;
+      border-left: 3px solid #38b2ac;
+      color: #666;
+      page-break-inside: avoid;
+      font-family: monospace;
+      font-size: 15px;
       line-height: 1.6;
-      font-size: 16px;
+      margin-bottom: 1.6em;
+      max-width: 100%;
+      overflow: auto;
+      padding: 1em 1.5em;
+      display: block;
+      word-wrap: break-word;
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <h1>${title}</h1>
-    <p>${content}</p>
+  <div class="tab">
+    ${tabButtons}
   </div>
+
+  ${tabContents}
+
+  <p><br></p>
+  <p><br></p>
+  <p>&nbsp;</p>
+  <p><br></p>
+
+  <script>
+    function openTab(evt, tabName) {
+      var i, tabcontent, tablinks;
+      tabcontent = document.getElementsByClassName("tabcontent");
+      for (i = 0; i < tabcontent.length; i++) {
+        tabcontent[i].style.display = "none";
+      }
+      tablinks = document.getElementsByClassName("tablinks");
+      for (i = 0; i < tablinks.length; i++) {
+        tablinks[i].className = tablinks[i].className.replace(" active", "");
+      }
+      document.getElementById(tabName).style.display = "block";
+      if (evt && evt.currentTarget) {
+        evt.currentTarget.className += " active";
+      }
+    }
+  </script>
 </body>
 </html>`;
   };
@@ -230,13 +314,13 @@ export default function Home() {
                   value={currentStep.title}
                   onChange={(e) => updateStepTitle(currentStep.id, e.target.value)}
                   className={`w-full p-2 ${theme === 'dark' ? 'bg-darkblue' : 'bg-teal'} rounded text-white text-center font-semibold`}
-                  placeholder={currentStep.id === 1 ? "Step title..." : ""}
+                  placeholder="Step title..."
                 />
                 <textarea
                   value={currentStep.content}
                   onChange={(e) => updateStepContent(currentStep.id, e.target.value)}
                   className={`w-full h-48 p-3 ${theme === 'dark' ? 'bg-darkblue' : 'bg-teal'} rounded text-white resize-none`}
-                  placeholder={currentStep.id === 1 ? "Step content..." : ""}
+                  placeholder="Step content..."
                 />
               </>
             )}
@@ -259,7 +343,7 @@ export default function Home() {
             </button>
           </div>
           <pre className="text-sm whitespace-pre-wrap">
-            {currentStep ? generateHTML(currentStep.title, currentStep.content) : "No step selected"}
+            {generateHTML()}
           </pre>
         </div>
       </div>
